@@ -1,3 +1,4 @@
+#!/usr/bin/ksh
 if [ "$#" == 0 ]
 then
         ls -tl | grep '\->  ' | awk '{print $9}'
