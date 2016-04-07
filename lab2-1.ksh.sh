@@ -1,8 +1,8 @@
 #!/usr/bin/ksh
 if [ "$#" == 0 ]
 then
-        ls -tl | grep '\->  ' | awk '{print $9}'
+        echo "Error! No arguments"
 else
-        ls -tl | grep '\-> '$1'$' | awk '{print $9}'
+        gfind -lname "$1" -ls | sort -k8 -k9 -k10 -r | sed -n "s/.*[.]\/\(.*\) -> .*/\1/p" | sed 's/\\ / /g'
 fi
 exit 0
