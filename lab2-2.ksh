@@ -1,12 +1,17 @@
 #!/usr/bin/ksh
 if [ "$#" == 0 ]
-then
-        echo "Error! No arguments"
+then 
+	echo "Error! No arguments"	
 else
-        getent group | grep '^'$1'::' | awk -F: '{print $4}' | tr , '\n' >> temp.txt
-        numb=`getent group | grep '^'$1'::' | awk -F: '{print $3}' | head -1`
-        getent passwd | grep ':'$numb':' | awk -F: '{print $1}' | tr , '\n' >> temp.txt
+	name=`/usr/xpg4/bin/id -G "$1" 2>&-`
+	if [ "$?" == 0 ]
+	then
+		a=`getent group | grep '^'$1'::' | awk -F: '{print $4}' | tr , '\n' `
+		numb=`getent group | grep '^'$1'::' | awk -F: '{print $3}' | head -1 `
+		b=`getent passwd | grep ':'$numb':' | awk -F: '{print $1}' | tr , '\n'`
+		echo "$a\n$b" | sort -u -k1
+	else
+		echo "Group does not exist."
+	fi	
 fi
-sort -k1 -u temp.txt
-rm -f temp.txt 2>$-
 exit 0
