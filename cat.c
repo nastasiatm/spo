@@ -44,7 +44,7 @@ int writeStderr(char *p) {
      	iov[0].iov_len = strlen(p);
 
      	iov[1].iov_base = part2;
-     	iov[1].iov_len = strlen(part2);/*
+     	iov[1].iov_len = strlen(part2);*/
 
      	if (writev(2, iov, 2) < 0) {
 		return 1;
