@@ -1,0 +1,40 @@
+CC=gcc
+CFLAGS=-c
+LDFLAGS=-pthreads -lrt 
+
+SOURCESServer=serv.c
+SOURCESClient=client.c
+SOURCES2PART=semaphore.c
+SOURCESPipe=pipe.c
+
+OBJECTSServer=$(SOURCESServer:.c=.o)
+OBJECTSClient=$(SOURCESClient:.c=.o)
+OBJECTS2PART=$(SOURCES2PART:.c=.o)
+OBJECTSPipe=$(SOURCESPipe:.c=.o)
+
+EXECUTABLEServer=serv
+EXECUTABLEClient=client
+EXECUTABLE2PART=semaphore
+EXECUTABLEPipe=pipe
+
+
+SOURCES=$(SOURCESClient) $(SOURCESServer) $(SOURCES2PART) $(SOURCESPipe)
+EXECUTABLE=$(EXECUTABLEClient) $(EXECUTABLEServer) $(EXECUTABLE2PART) $(EXECUTABLEPipe)
+
+all: $(SOURCES) $(EXECUTABLEClient) $(EXECUTABLEServer) $(EXECUTABLE2PART) $(EXECUTABLEPipe)
+
+
+$(EXECUTABLEServer): $(OBJECTSServer)
+	$(CC) $(LDFLAGS) $(OBJECTSServer) -o $@
+
+$(EXECUTABLEClient): $(OBJECTSClient)
+	$(CC) $(LDFLAGS) $(OBJECTSClient) -o $@
+
+$(EXECUTABLE2PART): $(OBJECTS2PART)
+	$(CC) $(LDFLAGS) $(OBJECTS2PART) -o $@
+
+$(EXECUTABLEPipe): $(OBJECTSPipe)
+	$(CC) $(LDFLAGS) $(OBJECTSPipe) -o $@
+
+.c.o:
+	$(CC) $(CFLAGS) $< -o $@
